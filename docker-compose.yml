@@ -9,8 +9,8 @@ services:
       - "443:443"
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
-      - "./traefik.toml:/etc/traefik/traefik.toml:ro"
-      - "./tls.toml:/etc/traefik/dynamic/tls.toml:ro"
+      - "./.traefik/config.toml:/etc/traefik/traefik.toml:ro"
+      - "./.traefik/dynamic:/etc/traefik/dynamic:ro"
       - "./.certs:/.certs:ro"
     labels:
       - "traefik.http.routers.traefik.rule=Host(`jamdev.test`)"
@@ -22,9 +22,9 @@ services:
     image: mailhog/mailhog
     labels:
       - "traefik.http.routers.mailhog.rule=Host(`mail.jamdev.test`)"
+      - "traefik.http.routers.mailhog.tls=true"
       - "traefik.http.routers.mailhog.service=mailhog-svc"
       - "traefik.http.services.mailhog-svc.loadBalancer.server.port=8025"
-      - "traefik.http.routers.mailhog.tls=true"
       - "traefik.enable=true"
     ports:
       - "1025:1025"
