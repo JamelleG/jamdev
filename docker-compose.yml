@@ -1,0 +1,34 @@
+version: "3.7"
+services:
+  traefik:
+    container_name: jamdev_gateway
+    image: "traefik:v2.2"
+    ports:
+      - "80:80"
+      - "8080:8080"
+      - "443:443"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - "./traefik.toml:/etc/traefik/traefik.toml:ro"
+      - "./tls.toml:/etc/traefik/dynamic/tls.toml:ro"
+      - "./.certs:/.certs:ro"
+    labels:
+      - "traefik.http.routers.traefik.rule=Host(`jamdev.test`)"
+      - "traefik.http.routers.traefik.service=traefik-svc"
+      - "traefik.http.services.traefik-svc.loadBalancer.server.port=8080"
+      - "traefik.http.routers.traefik.tls=true"
+      - "traefik.enable=true"
+  mail:
+    image: mailhog/mailhog
+    labels:
+      - "traefik.http.routers.mailhog.rule=Host(`mail.jamdev.test`)"
+      - "traefik.http.routers.mailhog.service=mailhog-svc"
+      - "traefik.http.services.mailhog-svc.loadBalancer.server.port=8025"
+      - "traefik.http.routers.mailhog.tls=true"
+      - "traefik.enable=true"
+    ports:
+      - "1025:1025"
+networks:
+  default:
+    external:
+      name: jamdev
