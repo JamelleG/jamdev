@@ -18,6 +18,9 @@ sub_regen() {
     DEV_CERTS=$(cat certs.txt | sort -u)
     mkcert --cert-file .certs/jamdev.pem --key-file .certs/jamdev-key.pem $DEV_CERTS
 }
+sub_list() {
+	cat certs.txt | sort -u
+}
 
 subcommand=$1
 case $subcommand in
