@@ -28,6 +28,10 @@ services:
       - "traefik.enable=true"
     ports:
       - "1025:1025"
+  docker-host:
+        image: qoomon/docker-host
+        cap_add: [ 'NET_ADMIN', 'NET_RAW' ]
+        restart: on-failure
 networks:
   default:
     external:
