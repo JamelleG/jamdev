@@ -3,6 +3,7 @@ services:
   traefik:
     container_name: jamdev_gateway
     image: "traefik:v2.2"
+    restart: always
     ports:
       - "80:80"
       - "8080:8080"
@@ -20,6 +21,7 @@ services:
       - "traefik.enable=true"
   mail:
     image: mailhog/mailhog
+    restart: always
     labels:
       - "traefik.http.routers.mailhog.rule=Host(`mail.jamdev.test`)"
       - "traefik.http.routers.mailhog.tls=true"
@@ -31,7 +33,7 @@ services:
   docker-host:
         image: qoomon/docker-host
         cap_add: [ 'NET_ADMIN', 'NET_RAW' ]
-        restart: on-failure
+        restart: always
 networks:
   default:
     external:
