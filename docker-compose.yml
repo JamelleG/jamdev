@@ -31,9 +31,21 @@ services:
     ports:
       - "1025:1025"
   docker-host:
-        image: qoomon/docker-host
-        cap_add: [ 'NET_ADMIN', 'NET_RAW' ]
-        restart: always
+    image: qoomon/docker-host
+    cap_add: ["NET_ADMIN", "NET_RAW"]
+    restart: always
+  docker-ssh:
+    image: panubo/sshd
+    environment: 
+      - SSH_USERS=jamdev:1001:1001
+      - SSH_ENABLE_PASSWORD_AUTH=true
+      - TCP_FORWARDING=true
+    volumes:
+      - "./ssh/bootstrap/:/etc/entrypoint.d/"
+    ports:
+      - "2222:22"
+    labels:
+      - "traefik.enable=false"
 networks:
   default:
     external:
