@@ -22,6 +22,9 @@ services:
   mail:
     image: mailhog/mailhog
     restart: always
+    environment:
+      - MH_STORAGE=maildir
+      - MH_MAILDIR_PATH=/home/mailhog/maildir
     labels:
       - "traefik.http.routers.mailhog.rule=Host(`mail.jamdev.test`)"
       - "traefik.http.routers.mailhog.tls=true"
