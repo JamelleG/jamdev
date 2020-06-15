@@ -3,7 +3,12 @@ Which currently allows:
 - enable running multiple projects
 - https
 
-# SSH Container
+## Mailhog
+- Web App: `https://mail.jamdev.test` 
+- SMTP Port: 1025
+- Github: https://github.com/mailhog/MailHog
+
+## SSH Container
 - SSH DETAILS:
   - ssh_user=jamdev
   - ssh_password=jamdev
