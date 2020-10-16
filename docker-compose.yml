@@ -21,6 +21,7 @@ services:
       - "traefik.enable=true"
   mail:
     image: mailhog/mailhog
+    container_name: jamdev_mail
     restart: always
     environment:
       - MH_STORAGE=maildir
