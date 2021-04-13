@@ -3,16 +3,17 @@ services:
   traefik:
     container_name: jamdev_gateway
     image: "traefik:v2.2"
+    privileged: true
     restart: always
     ports:
       - "80:80"
       - "8080:8080"
       - "443:443"
     volumes:
-      - "/var/run/docker.sock:/var/run/docker.sock:ro"
-      - "./.traefik/config.toml:/etc/traefik/traefik.toml:ro"
-      - "./.traefik/dynamic:/etc/traefik/dynamic:ro"
-      - "./.certs:/.certs:ro"
+      - "/var/run/docker.sock:/var/run/docker.sock:ro,z"
+      - "./.traefik/config.toml:/etc/traefik/traefik.toml:ro,z"
+      - "./.traefik/dynamic:/etc/traefik/dynamic:ro,z"
+      - "./.certs:/.certs:ro,z"
     labels:
       - "traefik.http.routers.traefik.rule=Host(`jamdev.test`)"
       - "traefik.http.routers.traefik.service=traefik-svc"
