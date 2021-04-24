@@ -1,16 +1,22 @@
 version: "3.7"
 services:
+  dockerproxy:
+    container_name: dockerproxy 
+    image: tecnativa/docker-socket-proxy
+    environment:
+      CONTAINERS: 1
+    privileged: true 
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:z"
   traefik:
     container_name: jamdev_gateway
     image: "traefik:v2.4.8"
-    privileged: true
     restart: always
     ports:
       - "80:80"
       - "8080:8080"
       - "443:443"
     volumes:
-      - "/var/run/docker.sock:/var/run/docker.sock:ro,z"
       - "./.traefik/config.toml:/etc/traefik/traefik.toml:ro,z"
       - "./.traefik/dynamic:/etc/traefik/dynamic:ro,z"
       - "./.certs:/.certs:ro,z"
