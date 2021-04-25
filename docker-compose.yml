@@ -27,7 +27,7 @@ services:
       - "traefik.http.routers.traefik.tls=true"
       - "traefik.enable=true"
   mail:
-    image: mailhog/mailhog
+    image: "mailhog/mailhog:v1.0.1"
     container_name: jamdev_mail
     restart: always
     environment:
@@ -42,7 +42,7 @@ services:
     ports:
       - "1025:1025"
   docker-host:
-    image: qoomon/docker-host
+    image: "qoomon/docker-host:2.7.0"
     cap_add: ["NET_ADMIN", "NET_RAW"]
     restart: always
   docker-ssh:
