@@ -37,21 +37,27 @@ services:
         - "2223:22"
     command: jamdev:jamdev:1000
   minio:
-    container_name: jamdev_minio
-    image: minio/minio
+    container_name: jamdev_minio 
+    image: minio/minio:latest
     environment:
-      MINIO_ACCESS_KEY: minio
-      MINIO_SECRET_KEY: minio123
-    command: server /data
+      MINIO_ROOT_USER: minio
+      MINIO_ROOT_PASSWORD: minio123
+      MINIO_DOMAIN: storage.jamdev.test
+    command: server /data --console-address ":9001"
     volumes:
       - "minio_data:/data"
     labels:
-      - "traefik.http.routers.jamdev-minio.rule=Host(`storage.jamdev.test`)"
+        # MINIO ADMIN
+      - "traefik.http.routers.jamdev-minio-admin.rule=Host(`minio.jamdev.test`)"
+      - "traefik.http.routers.jamdev-minio-admin.service=jamdev-minio-admin-svc"
+      - "traefik.http.services.jamdev-minio-admin-svc.loadBalancer.server.port=9001"
+      - "traefik.http.routers.jamdev-minio-admin.tls=true"
+        # MINIO VIRTUAL BUCKET ACCESS
+      - "traefik.http.routers.jamdev-minio.rule=HostRegexp(`{subhost:[a-z-]+}.storage.jamdev.test`)"
       - "traefik.http.routers.jamdev-minio.service=jamdev-minio-svc"
       - "traefik.http.services.jamdev-minio-svc.loadBalancer.server.port=9000"
       - "traefik.http.routers.jamdev-minio.tls=true"
       - "traefik.enable=true"
-
   mail:
     image: "mailhog/mailhog:v1.0.1"
     container_name: jamdev_mail
