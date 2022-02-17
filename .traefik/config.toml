@@ -18,6 +18,7 @@
 [providers]
   [providers.docker]
   endpoint = "tcp://dockerproxy:2375"
+  exposedbydefault=false
   [providers.file]
   directory = "/etc/traefik/dynamic"
   watch = true

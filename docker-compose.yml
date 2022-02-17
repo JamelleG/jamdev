@@ -1,7 +1,7 @@
 version: "3.7"
 services:
   dockerproxy:
-    container_name: dockerproxy 
+    container_name: jamdev_dockerproxy 
     image: tecnativa/docker-socket-proxy
     environment:
       CONTAINERS: 1
@@ -17,6 +17,7 @@ services:
     ports:
       - "80:80"
       - "8080:8080"
+        #      - "3000:3000"
       - "443:443"
     volumes:
       - "./.traefik/config.toml:/etc/traefik/traefik.toml:ro,z"
@@ -88,7 +89,7 @@ services:
     volumes:
       - "./ssh/bootstrap/:/etc/entrypoint.d/"
     ports:
-      - "2222:22"
+      - "32220:22"
     labels:
       - "traefik.enable=false"
 volumes:
